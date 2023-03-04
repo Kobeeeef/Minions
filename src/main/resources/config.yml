@@ -1,0 +1,11 @@
+license: N/A # Change this to your license ID!
+prefix: "[ Super Minions ]"
+minions:
+  Slayer:
+    cost: 20000
+  Miner:
+    cost: 20000
+  Fisher:
+    cost: 20000
+  Farmer:
+    cost: 20000

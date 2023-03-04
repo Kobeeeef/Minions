@@ -1,0 +1,11 @@
+name: Minions
+version: '${project.version}'
+main: org.shawty.Minions
+api-version: 1.19
+authors: [ Kobe ]
+description: Robotic Minions that do your job for you!
+commands:
+  minion:
+    aliases:
+      - minions
+    description: Get/Shop/Inspect for minions!
