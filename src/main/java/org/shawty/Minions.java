@@ -4,7 +4,10 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.shawty.Commands.Minion;
+import org.shawty.Commands.test;
 import org.shawty.Database.Config;
+import org.shawty.Events.EntityDamageByEntityEvent;
+import org.shawty.Events.PlayerInteractAtEntityEvent;
 import org.shawty.Events.PlayerInteractEvent;
 import org.shawty.Manager.MinionManager;
 import pl.socketbyte.opengui.OpenGUI;
@@ -26,7 +29,10 @@ public final class Minions extends JavaPlugin {
             Bukkit.getPluginManager().disablePlugin(this);
         } else {
             new PlayerInteractEvent();
+            new PlayerInteractAtEntityEvent();
+            new EntityDamageByEntityEvent();
             getCommand("minion").setExecutor(new Minion());
+            getCommand("test").setExecutor(new test());
             OpenGUI.INSTANCE.register(this);
             org.shawty.Files.Minions.setup();
             org.shawty.Files.Minions.get().addDefault("Minions", new ArrayList<Location>());

@@ -7,6 +7,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.shawty.Database.Minion;
 import org.shawty.Minions;
+import org.shawty.Utilities.GUI.MinionGUI;
 
 public class PlayerInteractAtEntityEvent implements Listener {
 
@@ -21,7 +22,8 @@ public class PlayerInteractAtEntityEvent implements Listener {
         org.shawty.Database.Minions minions = Minions.getMinionsClass();
         Minion minion = minions.getMinion(entity.getUniqueId());
         if(minion != null) {
-
+            event.setCancelled(true);
+            new MinionGUI(minion,player).openInventory(player);
         }
     }
 }

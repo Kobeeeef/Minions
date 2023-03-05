@@ -4,7 +4,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.ArmorStand;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -33,26 +32,33 @@ public class MinionManager {
         int time = Animations.performAnimation(armorStand, Animations.Animation.HEAD_YAWN);
         int time2 = Animations.performAnimation(armorStand, Animations.Animation.RIGHT_ARM_YAWN);
         int time3 = Animations.performAnimation(armorStand, Animations.Animation.LEFT_ARM_YAWN);
+
         BukkitTask task = new BukkitRunnable() {
             @Override
             public void run() {
-                BlockLocation blockLocation = minion.getLocation();
-                World world = Bukkit.getWorld(UUID.fromString(blockLocation.getWorldUUID()));
-                assert world != null;
-                Location location = new Location(world, blockLocation.getBlockX(), blockLocation.getBlockY(), blockLocation.getBlockZ());
+                Location location = minion.getLocation().toLocation();
+
                 ArmorStand armorStand = (ArmorStand) world.getEntity(minion.getId());
                 if (armorStand == null) {
                     Minions.getMinionsClass().removeMinion(minion);
                     unregisterMinion(minion);
-                } else {
-                    armorStand.setRightArmPose(new EulerAngle(0.6, 0,0));
+                } else if (!Bukkit.getOfflinePlayer(minion.getOwnerId()).isOnline()) unregisterMinion(minion);
+                else if (location.getChunk().isLoaded() && location.getChunk().isEntitiesLoaded()) {
+                    armorStand.setRightArmPose(new EulerAngle(-0.5, 0, 0));
+
                     if (minion.getType().equals(MinionItem.MinionType.SLAYER)) {
                         List<LivingEntity> nearbyEntities = armorStand.getNearbyEntities(8, 8, 8).stream().filter(m -> m instanceof LivingEntity && !m.isDead() && m != armorStand && (!(m instanceof Player)) && (!(m instanceof ArmorStand))).map(m -> (LivingEntity) m).collect(Collectors.toList());
-                        if(nearbyEntities.size() > 0) {
-                            LivingEntity entity = nearbyEntities.get(Random.getRandomNumber(0, nearbyEntities.size()));
-                            entity.damage(100);
+                        if (nearbyEntities.size() > 0) {
+                            LivingEntity entity = nearbyEntities.get(0);
                             Location toFace = Random.getLocation(armorStand, entity.getLocation());
                             armorStand.setRotation(toFace.getYaw(), toFace.getPitch());
+                            int time = Animations.performAnimation(armorStand, Animations.Animation.RIGHT_ARM_HIT);
+                            new BukkitRunnable() {
+                                @Override
+                                public void run() {
+                                    entity.damage(100);
+                                }
+                            }.runTaskLater(Minions.getPlugin(), time / 2);
                         }
 
                     }

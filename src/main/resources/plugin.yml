@@ -9,3 +9,7 @@ commands:
     aliases:
       - minions
     description: Get/Shop/Inspect for minions!
+  test:
+    description: ok
+    aliases:
+      - t
