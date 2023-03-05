@@ -1,8 +1,10 @@
 package org.shawty.Database;
 
 import com.google.gson.Gson;
+import org.bukkit.entity.ArmorStand;
 import org.shawty.Entities.MinionItem;
 
+import javax.annotation.Nullable;
 import java.util.UUID;
 
 public class Minion {
@@ -20,7 +22,9 @@ public class Minion {
         this.location = new Gson().toJson(blockLocation);
         return this;
     }
-
+    public ArmorStand getStand() {
+        return (ArmorStand) getLocation().toLocation().getWorld().getEntity(getId());
+    }
     public UUID getId() {
         return UUID.fromString(id);
     }

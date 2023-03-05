@@ -1,6 +1,6 @@
 package org.shawty.Utilities;
 
-import org.shawty.Minions;
+import org.shawty.Core;
 
 public enum Messages {
     INVENTORY_FULL_ERROR("Uh oh! Your inventory is full!"),
@@ -11,7 +11,7 @@ public enum Messages {
     private final String message;
 
     Messages(String message) {
-        this.message = Minions.getConfigClass().getPrefix() + " " + message;
+        this.message = Core.getConfigClass().getPrefix() + " " + message;
     }
 
     public String getMessage() {

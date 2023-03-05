@@ -1,7 +1,7 @@
 package org.shawty.Database;
 
 import org.bukkit.configuration.file.FileConfiguration;
-import org.shawty.Minions;
+import org.shawty.Core;
 
 public class Config {
     FileConfiguration fileConfiguration;
@@ -13,7 +13,7 @@ public class Config {
     }
     public void setPrefix(String prefix) {
         fileConfiguration.set("prefix", prefix);
-        Minions.getPlugin().saveConfig();
+        Core.getPlugin().saveConfig();
     }
     public String getLicense() {
         return fileConfiguration.getString("license");

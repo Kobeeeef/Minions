@@ -6,7 +6,7 @@ import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
-import org.shawty.Minions;
+import org.shawty.Core;
 
 public class MinionItem {
     PersistentDataContainer container;
@@ -18,23 +18,23 @@ public class MinionItem {
 
     public Integer getLevel() {
         if(container == null) return null;
-        return container.get(new NamespacedKey(Minions.getPlugin(), "LEVEL"), PersistentDataType.INTEGER);
+        return container.get(new NamespacedKey(Core.getPlugin(), "LEVEL"), PersistentDataType.INTEGER);
     }
     public MinionType getType() {
         if(container == null) return null;
-        return new Gson().fromJson(container.get(new NamespacedKey(Minions.getPlugin(), "TYPE"), PersistentDataType.STRING), MinionType.class);
+        return new Gson().fromJson(container.get(new NamespacedKey(Core.getPlugin(), "TYPE"), PersistentDataType.STRING), MinionType.class);
     }
     public boolean isMinion() {
         if(container == null) return false;
-        return container.has(new NamespacedKey(Minions.getPlugin(), "MINION"));
+        return container.has(new NamespacedKey(Core.getPlugin(), "MINION"));
     }
 
     public enum MinionType {
-        MINER(ChatColor.GOLD + "Miner Minion", Minions.getConfigClass().getMinerMinionCost()),
-        FISHER(ChatColor.GOLD + "Fisher Minion", Minions.getConfigClass().getFisherMinionCost()),
-        SLAYER(ChatColor.GOLD + "Slayer Minion", Minions.getConfigClass().getSlayerMinionCost()),
-        FARMER(ChatColor.GOLD + "Farmer Minion", Minions.getConfigClass().getFarmerMinionCost()),
-        SELLER(ChatColor.GOLD + "Seller Minion", Minions.getConfigClass().getFarmerMinionCost());
+        MINER(ChatColor.GOLD + "Miner Minion", Core.getConfigClass().getMinerMinionCost()),
+        FISHER(ChatColor.GOLD + "Fisher Minion", Core.getConfigClass().getFisherMinionCost()),
+        SLAYER(ChatColor.GOLD + "Slayer Minion", Core.getConfigClass().getSlayerMinionCost()),
+        FARMER(ChatColor.GOLD + "Farmer Minion", Core.getConfigClass().getFarmerMinionCost()),
+        SELLER(ChatColor.GOLD + "Seller Minion", Core.getConfigClass().getFarmerMinionCost());
         private final String name;
         private final int cost;
 

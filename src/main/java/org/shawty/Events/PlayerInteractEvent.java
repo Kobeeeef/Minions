@@ -9,24 +9,22 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
-import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.shawty.Database.BlockLocation;
-import org.shawty.Database.Config;
 import org.shawty.Database.Minion;
 import org.shawty.Entities.MinionItem;
 import org.shawty.Manager.MinionManager;
-import org.shawty.Minions;
+import org.shawty.Core;
 import org.shawty.Utilities.Inventorys;
 
 public class PlayerInteractEvent implements Listener {
 
     public PlayerInteractEvent() {
-        Bukkit.getPluginManager().registerEvents(this, Minions.getPlugin());
+        Bukkit.getPluginManager().registerEvents(this, Core.getPlugin());
     }
 
     @EventHandler
@@ -68,7 +66,7 @@ public class PlayerInteractEvent implements Listener {
                         .setOwnerId(player.getUniqueId())
                         .setType(minionItem.getType())
                         .setLevel(minionItem.getLevel());
-                org.shawty.Database.Minions minions = Minions.getMinionsClass();
+                org.shawty.Database.Minions minions = Core.getMinionsClass();
                 minions.addMinion(minion);
                 MinionManager.registerMinion(minion);
             }

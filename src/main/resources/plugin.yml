@@ -1,6 +1,6 @@
 name: Minions
 version: '${project.version}'
-main: org.shawty.Minions
+main: org.shawty.Core
 api-version: 1.19
 authors: [ Kobe ]
 description: Robotic Minions that do your job for you!

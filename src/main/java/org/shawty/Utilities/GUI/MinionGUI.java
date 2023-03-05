@@ -8,6 +8,7 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
+import org.shawty.Core;
 import org.shawty.Database.Minion;
 import org.shawty.Database.Minions;
 import org.shawty.Manager.MinionManager;
@@ -26,7 +27,7 @@ public class MinionGUI extends GUIExtender {
 
     public MinionGUI(Minion minion, Player player) {
         super(new GUI(ChatColor.GRAY + "Minion Settings", Rows.ONE));
-        Minions minions = org.shawty.Minions.getMinionsClass();
+        Minions minions = Core.getMinionsClass();
         OfflinePlayer owner = Bukkit.getOfflinePlayer(minion.getOwnerId());
         ItemStack upgrades = new ItemStack(Material.COAL);
         ItemMeta upgradesMeta = upgrades.getItemMeta();

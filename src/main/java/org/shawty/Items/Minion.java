@@ -9,7 +9,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
 import org.shawty.Entities.MinionItem;
-import org.shawty.Minions;
+import org.shawty.Core;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,9 +26,9 @@ public class Minion {
         meta.setLore(lore);
         meta.addEnchant(Enchantment.DURABILITY, 1, false);
         meta.addItemFlags(ItemFlag.HIDE_ENCHANTS, ItemFlag.HIDE_PLACED_ON);
-        meta.getPersistentDataContainer().set(new NamespacedKey(Minions.getPlugin(), "TYPE"), PersistentDataType.STRING, new Gson().toJson(type));
-        meta.getPersistentDataContainer().set(new NamespacedKey(Minions.getPlugin(), "MINION"), PersistentDataType.INTEGER, 1);
-        meta.getPersistentDataContainer().set(new NamespacedKey(Minions.getPlugin(), "LEVEL"), PersistentDataType.INTEGER, level);
+        meta.getPersistentDataContainer().set(new NamespacedKey(Core.getPlugin(), "TYPE"), PersistentDataType.STRING, new Gson().toJson(type));
+        meta.getPersistentDataContainer().set(new NamespacedKey(Core.getPlugin(), "MINION"), PersistentDataType.INTEGER, 1);
+        meta.getPersistentDataContainer().set(new NamespacedKey(Core.getPlugin(), "LEVEL"), PersistentDataType.INTEGER, level);
         item.setItemMeta(meta);
         return item;
     }

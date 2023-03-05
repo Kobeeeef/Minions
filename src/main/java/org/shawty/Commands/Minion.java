@@ -9,7 +9,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.jetbrains.annotations.NotNull;
 import org.shawty.Entities.MinionItem;
-import org.shawty.Minions;
 import org.shawty.Utilities.Messages;
 
 import java.util.ArrayList;

@@ -9,8 +9,12 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.util.EulerAngle;
 import org.jetbrains.annotations.NotNull;
+import org.shawty.Core;
+import org.shawty.Database.Minion;
+import org.shawty.Manager.MinionManager;
 import org.shawty.Utilities.Animations;
 
+import java.util.List;
 import java.util.UUID;
 
 public class test implements CommandExecutor {
@@ -19,12 +23,15 @@ public class test implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command cmd, @NotNull String label, String[] args) {
         Player player = ((Player) sender).getPlayer();
-        ArmorStand stand = (ArmorStand) player.getWorld().getEntity(UUID.fromString("a041997e-9355-4530-af13-a8668eed24f0"));
-//        double x = Double.parseDouble(args[0]);
-//        double z = Double.parseDouble(args[1]);
-//        stand.setRightArmPose(new EulerAngle(Math.toRadians(x),0, Math.toRadians(z)));
-
-        Animations.performAnimation(stand, Animations.Animation.RIGHT_ARM_HIT);
+        List<org.shawty.Database.Minion> minions = Core.getMinionsClass().getMinionsByOwner(player.getUniqueId());
+        if(!minions.isEmpty()) {
+            for(Minion minion : minions) {
+                if(minion.getLocation().toLocation().getChunk().isEntitiesLoaded() && minion.getStand() != null) {
+                    Animations.performAnimation(minion.getStand(), Animations.Animation.HEAD_DOWN);
+                }
+                MinionManager.unregisterMinion(minion);
+            }
+        }
         return false;
     }
 }

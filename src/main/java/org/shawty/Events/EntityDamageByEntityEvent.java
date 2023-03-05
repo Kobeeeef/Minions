@@ -7,12 +7,12 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.shawty.Database.Minion;
-import org.shawty.Minions;
+import org.shawty.Core;
 
 public class EntityDamageByEntityEvent implements Listener {
 
     public EntityDamageByEntityEvent() {
-        Bukkit.getPluginManager().registerEvents(this, Minions.getPlugin());
+        Bukkit.getPluginManager().registerEvents(this, Core.getPlugin());
     }
 
     @EventHandler
@@ -22,7 +22,7 @@ public class EntityDamageByEntityEvent implements Listener {
        if(entity instanceof ArmorStand && damager instanceof Player) {
            ArmorStand armorStand = (ArmorStand) entity;
            Player player = ((Player) damager).getPlayer();
-           Minion minion = Minions.getMinionsClass().getMinion(armorStand.getUniqueId());
+           Minion minion = Core.getMinionsClass().getMinion(armorStand.getUniqueId());
            if(minion != null) {
                event.setCancelled(true);
 

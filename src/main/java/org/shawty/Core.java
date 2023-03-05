@@ -9,13 +9,14 @@ import org.shawty.Database.Config;
 import org.shawty.Events.EntityDamageByEntityEvent;
 import org.shawty.Events.PlayerInteractAtEntityEvent;
 import org.shawty.Events.PlayerInteractEvent;
+import org.shawty.Events.PlayerQuitEvent;
 import org.shawty.Manager.MinionManager;
 import pl.socketbyte.opengui.OpenGUI;
 
 import java.util.*;
 import java.util.logging.Level;
 
-public final class Minions extends JavaPlugin {
+public final class Core extends JavaPlugin {
     public static Map<UUID, Integer> minionTasks = new HashMap<>();
 
 
@@ -31,6 +32,7 @@ public final class Minions extends JavaPlugin {
             new PlayerInteractEvent();
             new PlayerInteractAtEntityEvent();
             new EntityDamageByEntityEvent();
+            new PlayerQuitEvent();
             getCommand("minion").setExecutor(new Minion());
             getCommand("test").setExecutor(new test());
             OpenGUI.INSTANCE.register(this);
@@ -48,8 +50,8 @@ public final class Minions extends JavaPlugin {
         // Plugin shutdown logic
     }
 
-    public static Minions getPlugin() {
-        return Minions.getPlugin(Minions.class);
+    public static Core getPlugin() {
+        return Core.getPlugin(Core.class);
     }
 
     public static Config getConfigClass() {

@@ -3,6 +3,7 @@ package org.shawty.Files;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.shawty.Core;
 
 import java.io.File;
 import java.io.IOException;
@@ -11,7 +12,7 @@ public class Minions {
     private static File file;
     private static FileConfiguration configFile;
     public static void setup() {
-        file = new File(org.shawty.Minions.getPlugin().getDataFolder(), "minions.yml");
+        file = new File(Core.getPlugin().getDataFolder(), "minions.yml");
         if(!file.exists()) {
             try {
                 file.createNewFile();
