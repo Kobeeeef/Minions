@@ -23,11 +23,12 @@ public class test implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command cmd, @NotNull String label, String[] args) {
         Player player = ((Player) sender).getPlayer();
+        System.out.println(Core.getMinionsClass().getMinions().size());
         List<org.shawty.Database.Minion> minions = Core.getMinionsClass().getMinionsByOwner(player.getUniqueId());
         if(!minions.isEmpty()) {
             for(Minion minion : minions) {
                 if(minion.getLocation().toLocation().getChunk().isEntitiesLoaded() && minion.getStand() != null) {
-                    Animations.performAnimation(minion.getStand(), Animations.Animation.HEAD_DOWN);
+                    Animations.performAnimation(minion.getStand(), args[0].equals("1") ? Animations.Animation.HEAD_UP : Animations.Animation.HEAD_DOWN);
                 }
                 MinionManager.unregisterMinion(minion);
             }

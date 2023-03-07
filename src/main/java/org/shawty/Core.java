@@ -1,15 +1,11 @@
 package org.shawty;
 
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.shawty.Commands.Minion;
 import org.shawty.Commands.test;
 import org.shawty.Database.Config;
-import org.shawty.Events.EntityDamageByEntityEvent;
-import org.shawty.Events.PlayerInteractAtEntityEvent;
-import org.shawty.Events.PlayerInteractEvent;
-import org.shawty.Events.PlayerQuitEvent;
+import org.shawty.Events.*;
 import org.shawty.Manager.MinionManager;
 import pl.socketbyte.opengui.OpenGUI;
 
@@ -22,36 +18,45 @@ public final class Core extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        // Setup config files
         saveDefaultConfig();
+        // Setup config files
         Config config = getConfigClass();
         if (!config.getLicense().equals("ok")) {
             getLogger().log(Level.SEVERE, config.getPrefix() + " Your license is invalid! Please contact support @ our discord!");
             Bukkit.getPluginManager().disablePlugin(this);
         } else {
+            org.shawty.Files.Minions.setup();
+            org.shawty.Files.Minions.get().addDefault("Minions", new ArrayList<String>());
+            org.shawty.Files.Minions.get().options().copyDefaults(true);
+            org.shawty.Files.Minions.save();
+
             new PlayerInteractEvent();
             new PlayerInteractAtEntityEvent();
             new EntityDamageByEntityEvent();
             new PlayerQuitEvent();
+            new ChunkLoadEvent();
+            new PlayerJoinEvent();
             getCommand("minion").setExecutor(new Minion());
             getCommand("test").setExecutor(new test());
             OpenGUI.INSTANCE.register(this);
-            org.shawty.Files.Minions.setup();
-            org.shawty.Files.Minions.get().addDefault("Minions", new ArrayList<Location>());
-            org.shawty.Files.Minions.get().options().copyDefaults(true);
-            org.shawty.Files.Minions.save();
-
             startMinions();
         }
     }
 
     @Override
     public void onDisable() {
+        org.shawty.Files.Minions.save();
+        this.saveConfig();
         // Plugin shutdown logic
     }
 
     public static Core getPlugin() {
         return Core.getPlugin(Core.class);
+    }
+
+    public static void reload() {
+        org.shawty.Files.Minions.reload();
+        getPlugin().reloadConfig();
     }
 
     public static Config getConfigClass() {

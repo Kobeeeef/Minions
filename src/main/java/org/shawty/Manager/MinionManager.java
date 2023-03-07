@@ -6,7 +6,6 @@ import org.bukkit.World;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
-import org.bukkit.util.EulerAngle;
 import org.shawty.Core;
 import org.shawty.Database.BlockLocation;
 import org.shawty.Database.Minion;
@@ -36,17 +35,18 @@ public class MinionManager {
             public void run() {
                 Location location = minion.getLocation().toLocation();
                 ArmorStand armorStand = (ArmorStand) world.getEntity(minion.getId());
-                if (armorStand == null) {
-                    Core.getMinionsClass().removeMinion(minion);
+                if (!location.getChunk().isEntitiesLoaded()) {
+                    Bukkit.getLogger().info(Core.getConfigClass().getPrefix() + " Minion " + minion.getId() + " is not loaded! Removing minion from task!");
+                    unregisterMinion(minion);
+                } else if (armorStand == null) {
+                    Bukkit.getLogger().info(Core.getConfigClass().getPrefix() + " Minion " + minion.getId() + " could not be found! Removing minion from task!");
                     unregisterMinion(minion);
                 } else if (!Bukkit.getOfflinePlayer(minion.getOwnerId()).isOnline()) {
                     unregisterMinion(minion);
-                    if(location.getChunk().isLoaded() && location.getChunk().isEntitiesLoaded()) {
+                    if (location.getChunk().isEntitiesLoaded()) {
                         Animations.performAnimation(armorStand, Animations.Animation.HEAD_DOWN);
                     }
-                }
-                else if (location.getChunk().isLoaded() && location.getChunk().isEntitiesLoaded()) {
-                    armorStand.setRightArmPose(new EulerAngle(-0.5, 0, 0));
+                } else if (location.getChunk().isEntitiesLoaded()) {
 
                     if (minion.getType().equals(MinionItem.MinionType.SLAYER)) slayer.action();
                 }
@@ -54,6 +54,10 @@ public class MinionManager {
             }
         }.runTaskTimer(Core.getPlugin(), Random.getRandomNumber(10, 20) + Math.max(time, Math.max(time2, time3)), 240 - minion.getLevel() * 20L);
         Core.minionTasks.put(minion.getId(), task.getTaskId());
+    }
+
+    public static boolean isMinionRegistered(UUID minionId) {
+        return Core.minionTasks.containsKey(minionId);
     }
 
     public static void unregisterMinion(Minion minion) {
