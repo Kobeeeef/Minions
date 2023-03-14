@@ -1,30 +1,35 @@
 package org.shawty.Database;
 
 import com.google.gson.Gson;
+import java.util.UUID;
 import org.bukkit.entity.ArmorStand;
 import org.shawty.Entities.MinionItem;
 
-import javax.annotation.Nullable;
-import java.util.UUID;
-
 public class Minion {
     private int level;
+    private int fortune;
+
     private String owner;
     private String type;
     private String id;
     private String location;
-    public Minion() {
-    }
+
+    public Minion() {}
+
     public BlockLocation getLocation() {
         return new Gson().fromJson(location, BlockLocation.class);
     }
+
     public Minion setLocation(BlockLocation blockLocation) {
         this.location = new Gson().toJson(blockLocation);
         return this;
     }
+
     public ArmorStand getStand() {
-        return (ArmorStand) getLocation().toLocation().getWorld().getEntity(getId());
+        return (ArmorStand) getLocation().toLocation().getWorld().getEntity(
+                getId());
     }
+
     public UUID getId() {
         return UUID.fromString(id);
     }
@@ -33,6 +38,7 @@ public class Minion {
         this.id = id.toString();
         return this;
     }
+
     public UUID getOwnerId() {
         return UUID.fromString(owner);
     }
@@ -57,6 +63,14 @@ public class Minion {
 
     public Minion setOwnerId(UUID id) {
         this.owner = id.toString();
+        return this;
+    }
+    public int getFortune() {
+        return fortune;
+    }
+
+    public Minion setFortune(int fortune) {
+        this.fortune = fortune;
         return this;
     }
 }

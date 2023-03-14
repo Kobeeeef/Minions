@@ -52,7 +52,7 @@ public class MinionManager {
                 }
 
             }
-        }.runTaskTimer(Core.getPlugin(), Random.getRandomNumber(10, 20) + Math.max(time, Math.max(time2, time3)), 240 - minion.getLevel() * 20L);
+        }.runTaskTimer(Core.getPlugin(), Random.getRandomNumber(10, 20) + Math.max(time, Math.max(time2, time3)), minion.getLevel() == 11 ? 10L : 240 - minion.getLevel() * 20L);
         Core.minionTasks.put(minion.getId(), task.getTaskId());
     }
 

@@ -60,6 +60,21 @@ public class MinionLevels extends GUIExtender {
             player.playSound(player.getLocation(), Sound.ENTITY_ENDERMAN_TELEPORT, 1.0f, 0.1f);
         });
 
+        ItemStack fortuneLevels = new ItemStack(Material.REDSTONE_TORCH);
+        ItemMeta fortuneLevelsMeta = fortuneLevels.getItemMeta();
+        fortuneLevelsMeta.addEnchant(Enchantment.DURABILITY, 1, false);
+        fortuneLevelsMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+        fortuneLevelsMeta.setDisplayName(ChatColor.GOLD + ChatColor.BOLD.toString() + "LEVEL 2");
+        List<String> fortuneLore = new ArrayList<>();
+        fortuneLore.add(ChatColor.WHITE + "Fortune: " + ChatColor.DARK_PURPLE + "1.5x");
+        fortuneLore.add("");
+        fortuneLore.add(ChatColor.GREEN + ChatColor.BOLD.toString() + "20,000$");
+        fortuneLevelsMeta.setLore(fortuneLore);
+        fortuneLevels.setItemMeta(fortuneLevelsMeta);
+        setItem(4, new ItemBuilder().setItem(fortuneLevels), response -> {
+            player.sendMessage(Messages.LEVEL_ALREADY_REACHED.getMessage());
+            player.playSound(player.getLocation(), Sound.ENTITY_ENDERMAN_TELEPORT, 1.0f, 0.1f);
+        });
 
     }
 
