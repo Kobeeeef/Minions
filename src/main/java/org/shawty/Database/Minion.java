@@ -2,12 +2,18 @@ package org.shawty.Database;
 
 import com.google.gson.Gson;
 import java.util.UUID;
+
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.block.Chest;
 import org.bukkit.entity.ArmorStand;
+import org.bukkit.inventory.InventoryHolder;
 import org.shawty.Entities.MinionItem;
 
 public class Minion {
     private int level;
     private int fortune;
+    private String chest;
 
     private String owner;
     private String type;
@@ -24,7 +30,17 @@ public class Minion {
         this.location = new Gson().toJson(blockLocation);
         return this;
     }
+    public Chest getChest() {
+        if(chest == null) return null;
+        return (Chest) new Gson().fromJson(chest, BlockLocation.class).toLocation().getBlock().getState();
+    }
 
+    public Minion setChest(Location location) {
+        if(!(location.getBlock().getState() instanceof InventoryHolder)) return this;
+        this.chest = new Gson().toJson(new BlockLocation(location));
+        return this;
+
+    }
     public ArmorStand getStand() {
         return (ArmorStand) getLocation().toLocation().getWorld().getEntity(
                 getId());

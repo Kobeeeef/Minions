@@ -22,7 +22,7 @@ public class Minion implements CommandExecutor, TabCompleter {
         Player player = ((Player) sender).getPlayer();
         assert player != null;
         int level = Integer.parseInt(args[0]);
-        MinionItem.MinionType type = args[1].equals("slayer") ? MinionItem.MinionType.SLAYER : args[1].equals("miner") ? MinionItem.MinionType.MINER : args[1].equals("farmer") ? MinionItem.MinionType.FARMER : args[1].equals("fisher") ? MinionItem.MinionType.FISHER : null;
+        MinionItem.MinionType type = args[1].equals("slayer") ? MinionItem.MinionType.SLAYER : args[1].equals("miner") ? MinionItem.MinionType.MINER : args[1].equals("farmer") ? MinionItem.MinionType.FARMER : args[1].equals("fisher") ? MinionItem.MinionType.FISHER : args[1].equals("collector") ? MinionItem.MinionType.COLLECTOR :null;
         if(type == null) {
             player.sendMessage(Messages.INVALID_MINION.getMessage());
             return false;
@@ -53,6 +53,7 @@ public class Minion implements CommandExecutor, TabCompleter {
             completions.add("slayer");
             completions.add("fisher");
             completions.add("farmer");
+            completions.add("collector");
         }
         return completions;
     }

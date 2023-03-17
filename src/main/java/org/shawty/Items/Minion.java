@@ -14,7 +14,11 @@ import org.shawty.Core;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Minion {
+public class Minion extends ItemStack {
+    protected Minion() {
+        super();
+    }
+
     public static ItemStack getItem(int level, MinionItem.MinionType type) {
         ItemStack item = new ItemStack(Material.VILLAGER_SPAWN_EGG, 1);
         ItemMeta meta = item.getItemMeta();

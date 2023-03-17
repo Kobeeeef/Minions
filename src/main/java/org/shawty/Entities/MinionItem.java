@@ -34,7 +34,8 @@ public class MinionItem {
         FISHER(ChatColor.GOLD + "Fisher Minion", Core.getConfigClass().getFisherMinionCost()),
         SLAYER(ChatColor.GOLD + "Slayer Minion", Core.getConfigClass().getSlayerMinionCost()),
         FARMER(ChatColor.GOLD + "Farmer Minion", Core.getConfigClass().getFarmerMinionCost()),
-        SELLER(ChatColor.GOLD + "Seller Minion", Core.getConfigClass().getFarmerMinionCost());
+        SELLER(ChatColor.GOLD + "Seller Minion", Core.getConfigClass().getFarmerMinionCost()),
+        COLLECTOR(ChatColor.GOLD + "Collector Minion", Core.getConfigClass().getFisherMinionCost());
         private final String name;
         private final int cost;
 

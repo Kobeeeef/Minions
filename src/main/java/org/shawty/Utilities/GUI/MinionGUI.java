@@ -1,6 +1,7 @@
 package org.shawty.Utilities.GUI;
 
 import org.bukkit.*;
+import org.bukkit.block.Chest;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
@@ -11,6 +12,7 @@ import org.bukkit.inventory.meta.SkullMeta;
 import org.shawty.Core;
 import org.shawty.Database.Minion;
 import org.shawty.Database.Minions;
+import org.shawty.Entities.MinionItem;
 import org.shawty.Manager.MinionManager;
 import org.shawty.Utilities.Inventorys;
 import org.shawty.Utilities.Messages;
@@ -74,6 +76,22 @@ public class MinionGUI extends GUIExtender {
                 player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 0.5f, 0.5f);
             }
         });
+
+        if (minion.getType().equals(MinionItem.MinionType.COLLECTOR)) {
+            ItemStack chestItem = new ItemStack(Material.CHEST);
+            ItemMeta chestItemMeta = chestItem.getItemMeta();
+            chestItemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+            chestItemMeta.setDisplayName(ChatColor.GOLD + "CHEST");
+            List<String> chestLore = new ArrayList<>();
+            Chest chest = minion.getChest();
+            chestLore.add("");
+            chestLore.add(chest == null ? ChatColor.GOLD + ChatColor.BOLD.toString() + "CLICK TO SET!" : ChatColor.GREEN + ChatColor.BOLD.toString() + String.format("x:%1$d y:%2$d z:%3$d", chest.getLocation().getBlockX(), chest.getLocation().getBlockY(), chest.getLocation().getBlockZ()));
+            chestItemMeta.setLore(chestLore);
+            chestItem.setItemMeta(chestItemMeta);
+            addItem(new ItemBuilder().setItem(chestItem), response -> {
+
+            });
+        } else setItem(8, filler);
     }
 
     @Override

@@ -10,6 +10,8 @@ import org.shawty.Core;
 import org.shawty.Database.BlockLocation;
 import org.shawty.Database.Minion;
 import org.shawty.Entities.MinionItem;
+import org.shawty.Minions.Types.Collector;
+import org.shawty.Minions.Types.Miner;
 import org.shawty.Minions.Types.Slayer;
 import org.shawty.Utilities.Animations;
 import org.shawty.Utilities.Random;
@@ -29,7 +31,8 @@ public class MinionManager {
         int time2 = Animations.performAnimation(armorStand, Animations.Animation.RIGHT_ARM_YAWN);
         int time3 = Animations.performAnimation(armorStand, Animations.Animation.LEFT_ARM_YAWN);
         Slayer slayer = new Slayer(minion, armorStand);
-
+        Miner miner = new Miner(minion, armorStand);
+        Collector collector = new Collector(minion,armorStand);
         BukkitTask task = new BukkitRunnable() {
             @Override
             public void run() {
@@ -49,10 +52,12 @@ public class MinionManager {
                 } else if (location.getChunk().isEntitiesLoaded()) {
 
                     if (minion.getType().equals(MinionItem.MinionType.SLAYER)) slayer.action();
+                    if (minion.getType().equals(MinionItem.MinionType.MINER)) miner.action();
+                    if (minion.getType().equals(MinionItem.MinionType.COLLECTOR)) collector.action();
                 }
 
             }
-        }.runTaskTimer(Core.getPlugin(), Random.getRandomNumber(10, 20) + Math.max(time, Math.max(time2, time3)), minion.getLevel() == 11 ? 10L : 240 - minion.getLevel() * 20L);
+        }.runTaskTimer(Core.getPlugin(), Random.getRandomNumber(10, 20) + Math.max(time, Math.max(time2, time3)), minion.getLevel() == 11 ? 15L : 240 - minion.getLevel() * 20L);
         Core.minionTasks.put(minion.getId(), task.getTaskId());
     }
 
