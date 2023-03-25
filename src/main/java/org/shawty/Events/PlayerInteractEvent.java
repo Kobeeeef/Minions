@@ -21,6 +21,7 @@ import org.shawty.Entities.MinionItem;
 import org.shawty.Manager.MinionManager;
 import org.shawty.Utilities.Inventorys;
 
+@SuppressWarnings("deprecation")
 public class PlayerInteractEvent implements Listener {
 
     public PlayerInteractEvent() {
@@ -59,7 +60,7 @@ public class PlayerInteractEvent implements Listener {
                 stand.getEquipment().setChestplate(getEquipment(1, minionItem.getLevel()));
                 stand.getEquipment().setLeggings(getEquipment(2, minionItem.getLevel()));
                 stand.getEquipment().setBoots(getEquipment(3, minionItem.getLevel()));
-                stand.getEquipment().setItemInMainHand(getEquipment(minionItem.getType().equals(MinionItem.MinionType.SLAYER) ? 4 : minionItem.getType().equals(MinionItem.MinionType.MINER) ? 5 : minionItem.getType().equals(MinionItem.MinionType.FARMER) ? 7 : minionItem.getType().equals(MinionItem.MinionType.FISHER) ? 6 : minionItem.getType().equals(MinionItem.MinionType.SELLER) ? 8 : minionItem.getType().equals(MinionItem.MinionType.COLLECTOR) ? 9 : 0, minionItem.getLevel()));
+                stand.getEquipment().setItemInMainHand(getEquipment(minionItem.getType().getEquipmentType(), minionItem.getLevel()));
                 Minion minion = new Minion()
                         .setId(stand.getUniqueId())
                         .setLocation(new BlockLocation(location.getBlock().getLocation()))
@@ -173,7 +174,7 @@ public class PlayerInteractEvent implements Listener {
             if (level == 10) {
                 glowEquipment(armor);
             }
-        } else if (level == 11 && type == 1) {
+        } else if (level == 11 && type == 3) {
             ItemStack item = new ItemStack(Material.LEATHER_BOOTS);
             LeatherArmorMeta leatherArmorMeta = (LeatherArmorMeta) item.getItemMeta();
             leatherArmorMeta.setColor(Color.RED);
@@ -266,9 +267,34 @@ public class PlayerInteractEvent implements Listener {
             if (level >= 2) {
                 glowEquipment(armor);
             }
-        }else if (type == 9) {
+        } else if (type == 9) {
             armor = new ItemStack(Material.HOPPER);
             if (level >= 2) {
+                glowEquipment(armor);
+            }
+        }else if ((level == 1 || level == 2) && type == 10) {
+            armor = new ItemStack(Material.WOODEN_AXE);
+            if (level == 2) {
+                glowEquipment(armor);
+            }
+        } else if ((level == 3 || level == 4) && type == 10) {
+            armor = new ItemStack(Material.STONE_AXE);
+            if (level == 4) {
+                glowEquipment(armor);
+            }
+        } else if ((level == 5 || level == 6) && type == 10) {
+            armor = new ItemStack(Material.IRON_AXE);
+            if (level == 6) {
+                glowEquipment(armor);
+            }
+        } else if ((level == 7 || level == 8) && type == 10) {
+            armor = new ItemStack(Material.DIAMOND_AXE);
+            if (level == 8) {
+                glowEquipment(armor);
+            }
+        } else if ((level >= 9) && type == 10) {
+            armor = new ItemStack(Material.NETHERITE_AXE);
+            if (level >= 10) {
                 glowEquipment(armor);
             }
         }

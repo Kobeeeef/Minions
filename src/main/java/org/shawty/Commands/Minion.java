@@ -10,7 +10,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.jetbrains.annotations.NotNull;
 import org.shawty.Commands.Entities.PlayersManager;
+import org.shawty.Core;
 import org.shawty.Entities.MinionItem;
+import org.shawty.Manager.MinionManager;
 import org.shawty.Utilities.Messages;
 
 import java.util.ArrayList;
@@ -26,12 +28,11 @@ public class Minion implements CommandExecutor, TabCompleter {
         assert player != null;
         if (args[0].equals("give")) {
             int level = Integer.parseInt(args[2]);
-            MinionItem.MinionType type = args[1].equals("slayer") ? MinionItem.MinionType.SLAYER : args[1].equals("miner") ? MinionItem.MinionType.MINER : args[1].equals("farmer") ? MinionItem.MinionType.FARMER : args[1].equals("fisher") ? MinionItem.MinionType.FISHER : args[1].equals("collector") ? MinionItem.MinionType.COLLECTOR : null;
+            MinionItem.MinionType type = args[1].equals("slayer") ? MinionItem.MinionType.SLAYER : args[1].equals("miner") ? MinionItem.MinionType.MINER : args[1].equals("farmer") ? MinionItem.MinionType.FARMER : args[1].equals("fisher") ? MinionItem.MinionType.FISHER : args[1].equals("collector") ? MinionItem.MinionType.COLLECTOR : args[1].equals("lumberjack") ? MinionItem.MinionType.LUMBERJACK :null;
             if (type == null) {
                 player.sendMessage(Messages.INVALID_MINION.getMessage());
                 return false;
             }
-
             new PlayersManager(args.length > 3 ? args[3] : null, player) {
                 @Override
                 public void run(Player target) {
@@ -41,9 +42,16 @@ public class Minion implements CommandExecutor, TabCompleter {
                     }
                     Inventory inv = target.getInventory();
                     inv.addItem(org.shawty.Items.Minion.getItem(level, type));
+                    target.sendMessage(Core.getConfigClass().getPrefix() + " You have been given a level " + level + " " + type + " minion!");
                 }
             };
             return true;
+        } else if(args[0].equals("stop")) {
+            player.sendMessage(Core.getConfigClass().getPrefix()+ " " + Core.minionTasks.size() + " minions have been stopped!");
+            Core.getMinionsClass().getMinions().forEach(MinionManager::unregisterMinion);
+        } else if(args[0].equals("restart")) {
+            Core.getMinionsClass().getMinions().forEach(MinionManager::registerMinion);
+            player.sendMessage(Core.getConfigClass().getPrefix() + " " + Core.minionTasks.size() + " minions have been restarted!");
         }
 
 
@@ -54,6 +62,8 @@ public class Minion implements CommandExecutor, TabCompleter {
     public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, String[] args) {
         List<String> completions = new ArrayList<>();
         if (args.length == 1) {
+            completions.add("stop");
+            completions.add("restart");
             completions.add("give");
             completions.add("shop");
             completions.add("reload");
@@ -64,6 +74,7 @@ public class Minion implements CommandExecutor, TabCompleter {
                 completions.add("fisher");
                 completions.add("farmer");
                 completions.add("collector");
+                completions.add("lumberjack");
             }
         } else if (args.length == 3) {
             if (args[0].equals("give")) {

@@ -29,32 +29,48 @@ public class Collector implements IMinion {
     public void action() {
         Location location = minion.getLocation().toLocation();
         collectItems(minion);
-        List<Item> items = location.getNearbyEntitiesByType(Item.class, 8).stream().filter(i -> i.getLocation().distance(location) > 1).collect(Collectors.toList());
-        for (Item item : items) {
-            item.setCanMobPickup(false);
-            double distance = location.distance(item.getLocation());
-            double speed = (0.35 * distance);
-            item.setVelocity(location.subtract(item.getLocation()).toVector().normalize().multiply(speed));
-            Vector direction = item.getLocation().subtract(stand.getLocation()).toVector().normalize();
-            float yaw = (float) Math.toDegrees(Math.atan2(-direction.getX(), direction.getZ()));
-            float pitch = (float) Math.toDegrees(Math.asin(direction.getY()));
-            stand.setRotation(yaw, pitch);
-            stand.setHeadPose(getHeadPose(stand.getLocation(), item.getLocation()));
-        }
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-                collectItems(minion);
+        List<Item> items = location.getNearbyEntitiesByType(Item.class, 9).stream().filter(i -> i.getLocation().distance(location) > 1 && i.getLocation().getBlockY() >= stand.getLocation().getBlockY()).collect(Collectors.toList());
+        if (items.size() > 10) collectAllItems(minion);
+        else if(!items.isEmpty()) {
+            for (Item item : items) {
+                double distance = location.distance(item.getLocation());
+                double speed = (0.35 * distance);
+                if (!item.isOnGround()) speed = speed / 2;
+                item.setVelocity(location.subtract(item.getLocation()).toVector().normalize().multiply(speed));
+                Vector direction = item.getLocation().subtract(stand.getLocation()).toVector().normalize();
+                float yaw = (float) Math.toDegrees(Math.atan2(-direction.getX(), direction.getZ()));
+                float pitch = (float) Math.toDegrees(Math.asin(direction.getY()));
+                stand.setRotation(yaw, pitch);
+                stand.setHeadPose(getHeadPose(stand.getLocation(), item.getLocation()));
             }
-        }.runTaskLater(Core.getPlugin(), 10L);
+            new BukkitRunnable() {
+                @Override
+                public void run() {
+                    collectItems(minion);
+                }
+            }.runTaskLater(Core.getPlugin(), 10L);
+        }
     }
 
     private void collectItems(Minion minion) {
         Location location = minion.getLocation().toLocation();
-        Collection<Item> itemsToPickup = location.getNearbyEntitiesByType(Item.class, 2);
-        for (Item item : itemsToPickup) {
+        Collection<Item> itemsToPickup = location.getNearbyEntitiesByType(Item.class, 1.75);
+        if(!itemsToPickup.isEmpty()) {
+            for (Item item : itemsToPickup) {
+                item.remove();
+            }
             location.getWorld().playSound(location, Sound.ENTITY_ITEM_PICKUP, 1, 1);
-            item.remove();
+        }
+    }
+
+    private void collectAllItems(Minion minion) {
+        Location location = minion.getLocation().toLocation();
+        Collection<Item> itemsToPickup = location.getNearbyEntitiesByType(Item.class, 9);
+        if(!itemsToPickup.isEmpty()) {
+            for (Item item : itemsToPickup) {
+                item.remove();
+            }
+            location.getWorld().playSound(location, Sound.ENTITY_ITEM_PICKUP, 1, 1);
         }
     }
 }

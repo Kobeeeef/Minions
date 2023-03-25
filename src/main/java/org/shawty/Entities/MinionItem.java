@@ -30,21 +30,27 @@ public class MinionItem {
     }
 
     public enum MinionType {
-        MINER(ChatColor.GOLD + "Miner Minion", Core.getConfigClass().getMinerMinionCost()),
-        FISHER(ChatColor.GOLD + "Fisher Minion", Core.getConfigClass().getFisherMinionCost()),
-        SLAYER(ChatColor.GOLD + "Slayer Minion", Core.getConfigClass().getSlayerMinionCost()),
-        FARMER(ChatColor.GOLD + "Farmer Minion", Core.getConfigClass().getFarmerMinionCost()),
-        SELLER(ChatColor.GOLD + "Seller Minion", Core.getConfigClass().getFarmerMinionCost()),
-        COLLECTOR(ChatColor.GOLD + "Collector Minion", Core.getConfigClass().getFisherMinionCost());
+        LUMBERJACK(ChatColor.GOLD + "Lumberjack Minion", Core.getConfigClass().getMinerMinionCost(), 10),
+        MINER(ChatColor.GOLD + "Miner Minion", Core.getConfigClass().getMinerMinionCost(), 5),
+        FISHER(ChatColor.GOLD + "Fisher Minion", Core.getConfigClass().getFisherMinionCost(), 6),
+        SLAYER(ChatColor.GOLD + "Slayer Minion", Core.getConfigClass().getSlayerMinionCost(), 4),
+        FARMER(ChatColor.GOLD + "Farmer Minion", Core.getConfigClass().getFarmerMinionCost(), 7),
+        SELLER(ChatColor.GOLD + "Seller Minion", Core.getConfigClass().getFarmerMinionCost(), 8),
+        COLLECTOR(ChatColor.GOLD + "Collector Minion", Core.getConfigClass().getFisherMinionCost(), 9);
         private final String name;
         private final int cost;
+        private final int equipmentType;
 
         public int getCost() {
             return cost;
         }
 
-        MinionType(String name, int cost) {
+        public int getEquipmentType() {
+            return equipmentType;
+        }
 
+        MinionType(String name, int cost, int equipmentType) {
+            this.equipmentType = equipmentType;
             this.name = name;
             this.cost = cost;
         }

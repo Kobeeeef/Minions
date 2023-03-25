@@ -43,7 +43,8 @@ public class Slayer implements IMinion {
                     entity.damage(10, stand);
                     if (!entity.isDead()) {
                         if (entity.getLocation().distance(stand.getLocation()) > 2) {
-                            entity.setVelocity(stand.getLocation().subtract(entity.getLocation()).toVector().normalize().multiply(0.2));
+
+
                         }
                     }
                 }

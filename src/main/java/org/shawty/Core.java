@@ -1,5 +1,6 @@
 package org.shawty;
 
+import io.lumine.mythic.bukkit.MythicBukkit;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.shawty.Commands.Minion;
@@ -14,7 +15,7 @@ import java.util.logging.Level;
 
 public final class Core extends JavaPlugin {
     public static Map<UUID, Integer> minionTasks = new HashMap<>();
-
+    private static MythicBukkit mythicMobs;
 
     @Override
     public void onEnable() {
@@ -48,6 +49,32 @@ public final class Core extends JavaPlugin {
         org.shawty.Files.Minions.save();
         this.saveConfig();
         // Plugin shutdown logic
+    }
+    private static boolean checkMythicMobs() {
+        if(mythicMobs != null)
+            return true;
+        try {
+            MythicBukkit inst = MythicBukkit.inst();
+            if (inst != null)
+            {
+                mythicMobs = inst;
+                return true;
+            }
+        } catch (NoClassDefFoundError error) {
+            Bukkit.getLogger().warning("[Minions] : MythicMobs could not be found.");
+        }
+        return false;
+    }
+
+    /**
+     * Return MythicMobs instance
+     * @return
+     */
+    public static MythicBukkit getMythicMobs()
+    {
+        if(mythicMobs == null)
+            checkMythicMobs();
+        return mythicMobs;
     }
 
     public static Core getPlugin() {
