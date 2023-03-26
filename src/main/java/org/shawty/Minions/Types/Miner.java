@@ -1,15 +1,12 @@
 package org.shawty.Minions.Types;
 
 import org.bukkit.Location;
-import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.inventory.InventoryHolder;
-import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.BoundingBox;
 import org.bukkit.util.EulerAngle;
 import org.bukkit.util.Vector;
-import org.shawty.Core;
 import org.shawty.Database.Minion;
 import org.shawty.Minions.IMinion;
 import org.shawty.Utilities.Animations;
@@ -44,14 +41,8 @@ public class Miner implements IMinion {
             float pitch = (float) Math.toDegrees(Math.asin(direction.getY()));
             stand.setRotation(yaw, pitch);
             stand.setHeadPose(getHeadPose(stand.getLocation(), block.getLocation()));
-            int time = Animations.performAnimation(stand, Animations.Animation.RIGHT_ARM_HIT);
-            new BukkitRunnable() {
-                @Override
-                public void run() {
-                    block.breakNaturally(true, true);
-                }
-            }.runTaskLater(Core.getPlugin(), time / 2);
-
+            Animations.performAnimation(stand, Animations.Animation.RIGHT_ARM_HIT);
+            block.breakNaturally(true, true);
         }
     }
 
