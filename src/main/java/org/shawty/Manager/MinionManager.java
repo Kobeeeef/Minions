@@ -9,11 +9,8 @@ import org.bukkit.scheduler.BukkitTask;
 import org.shawty.Core;
 import org.shawty.Database.BlockLocation;
 import org.shawty.Database.Minion;
-import org.shawty.Entities.MinionItem;
-import org.shawty.Minions.Types.Collector;
-import org.shawty.Minions.Types.Lumberjack;
-import org.shawty.Minions.Types.Miner;
-import org.shawty.Minions.Types.Slayer;
+import org.shawty.Entities.MinionType;
+import org.shawty.Minions.Types.*;
 import org.shawty.Utilities.Animations;
 import org.shawty.Utilities.Random;
 
@@ -31,11 +28,12 @@ public class MinionManager {
         int time = Animations.performAnimation(armorStand, Animations.Animation.HEAD_YAWN);
         int time2 = Animations.performAnimation(armorStand, Animations.Animation.RIGHT_ARM_YAWN);
         int time3 = Animations.performAnimation(armorStand, Animations.Animation.LEFT_ARM_YAWN);
-        MinionItem.MinionType type = minion.getType();
-        Lumberjack lumberjack = type.equals(MinionItem.MinionType.LUMBERJACK) ? new Lumberjack(minion, armorStand) : null;
-        Slayer slayer = type.equals(MinionItem.MinionType.SLAYER) ? new Slayer(minion, armorStand) : null;
-        Miner miner = type.equals(MinionItem.MinionType.MINER) ? new Miner(minion, armorStand) : null;
-        Collector collector = type.equals(MinionItem.MinionType.COLLECTOR) ? new Collector(minion, armorStand) : null;
+        MinionType type = minion.getType();
+        Lumberjack lumberjack = type.equals(MinionType.LUMBERJACK) ? new Lumberjack(minion, armorStand) : null;
+        Slayer slayer = type.equals(MinionType.SLAYER) ? new Slayer(minion, armorStand) : null;
+        Miner miner = type.equals(MinionType.MINER) ? new Miner(minion, armorStand) : null;
+        Bloomer bloomer = type.equals(MinionType.BLOOMER) ? new Bloomer(minion, armorStand) : null;
+        Collector collector = type.equals(MinionType.COLLECTOR) ? new Collector(minion, armorStand) : null;
 
         BukkitTask task = new BukkitRunnable() {
             @Override
@@ -55,14 +53,15 @@ public class MinionManager {
                     }
                 } else if (location.getChunk().isEntitiesLoaded()) {
 
-                    if (type.equals(MinionItem.MinionType.SLAYER)) slayer.action();
-                    else if (type.equals(MinionItem.MinionType.MINER)) miner.action();
-                    else if (type.equals(MinionItem.MinionType.COLLECTOR)) collector.action();
-                    else if (type.equals(MinionItem.MinionType.LUMBERJACK)) lumberjack.action();
+                    if (type.equals(MinionType.SLAYER)) slayer.action();
+                    else if (type.equals(MinionType.MINER)) miner.action();
+                    else if (type.equals(MinionType.COLLECTOR)) collector.action();
+                    else if (type.equals(MinionType.LUMBERJACK)) lumberjack.action();
+                    else if (type.equals(MinionType.BLOOMER)) bloomer.action();
                 }
 
             }
-        }.runTaskTimer(Core.getPlugin(), Random.getRandomNumber(10, 20) + Math.max(time, Math.max(time2, time3)),minion.getLevel() == 11 ? minion.getType().getTicksPerActionForMaxLevel() : 240 - minion.getLevel() * 20L);
+        }.runTaskTimer(Core.getPlugin(), Random.getRandomNumber(10, 20) + Math.max(time, Math.max(time2, time3)), minion.getLevel() == 11 ? minion.getType().getTicksPerActionForMaxLevel() : 240 - minion.getLevel() * 20L);
         Core.minionTasks.put(minion.getId(), task.getTaskId());
     }
 

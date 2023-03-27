@@ -20,11 +20,11 @@ import java.util.stream.Collectors;
 import static org.shawty.Utilities.Random.getHeadPose;
 
 public class Lumberjack implements IMinion {
-    Minion minion;
-    ArmorStand stand;
     private final BlockFace[] blockFaces = new BlockFace[]{BlockFace.SELF, BlockFace.UP, BlockFace.DOWN, BlockFace.NORTH, BlockFace.EAST, BlockFace.WEST, BlockFace.SOUTH};
     private final Material[] wood_blocks = new Material[]{Material.OAK_LOG, Material.DARK_OAK_LOG, Material.BIRCH_LOG, Material.MANGROVE_LOG, Material.JUNGLE_LOG, Material.SPRUCE_LOG, Material.ACACIA_LOG};
     private final Material[] wood_leaves = new Material[]{Material.OAK_LEAVES, Material.DARK_OAK_LEAVES, Material.BIRCH_LEAVES, Material.MANGROVE_LEAVES, Material.JUNGLE_LEAVES, Material.SPRUCE_LEAVES, Material.ACACIA_LEAVES, Material.VINE};
+    Minion minion;
+    ArmorStand stand;
 
     public Lumberjack(Minion minion, ArmorStand stand) {
         this.minion = minion;

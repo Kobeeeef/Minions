@@ -272,7 +272,7 @@ public class PlayerInteractEvent implements Listener {
             if (level >= 2) {
                 glowEquipment(armor);
             }
-        }else if ((level == 1 || level == 2) && type == 10) {
+        } else if ((level == 1 || level == 2) && type == 10) {
             armor = new ItemStack(Material.WOODEN_AXE);
             if (level == 2) {
                 glowEquipment(armor);

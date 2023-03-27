@@ -1,14 +1,13 @@
 package org.shawty.Database;
 
 import com.google.gson.Gson;
-import java.util.UUID;
-
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.block.Chest;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.inventory.InventoryHolder;
-import org.shawty.Entities.MinionItem;
+import org.shawty.Entities.MinionType;
+
+import java.util.UUID;
 
 public class Minion {
     private int level;
@@ -20,7 +19,8 @@ public class Minion {
     private String id;
     private String location;
 
-    public Minion() {}
+    public Minion() {
+    }
 
     public BlockLocation getLocation() {
         return new Gson().fromJson(location, BlockLocation.class);
@@ -30,20 +30,21 @@ public class Minion {
         this.location = new Gson().toJson(blockLocation);
         return this;
     }
+
     public Chest getChest() {
-        if(chest == null) return null;
+        if (chest == null) return null;
         return (Chest) new Gson().fromJson(chest, BlockLocation.class).toLocation().getBlock().getState();
     }
 
     public Minion setChest(Location location) {
-        if(!(location.getBlock().getState() instanceof InventoryHolder)) return this;
+        if (!(location.getBlock().getState() instanceof InventoryHolder)) return this;
         this.chest = new Gson().toJson(new BlockLocation(location));
         return this;
 
     }
+
     public ArmorStand getStand() {
-        return (ArmorStand) getLocation().toLocation().getWorld().getEntity(
-                getId());
+        return (ArmorStand) getLocation().toLocation().getWorld().getEntity(getId());
     }
 
     public UUID getId() {
@@ -59,8 +60,18 @@ public class Minion {
         return UUID.fromString(owner);
     }
 
-    public MinionItem.MinionType getType() {
-        return new Gson().fromJson(type, MinionItem.MinionType.class);
+    public Minion setOwnerId(UUID id) {
+        this.owner = id.toString();
+        return this;
+    }
+
+    public MinionType getType() {
+        return new Gson().fromJson(type, MinionType.class);
+    }
+
+    public Minion setType(MinionType type) {
+        this.type = new Gson().toJson(type);
+        return this;
     }
 
     public int getLevel() {
@@ -72,15 +83,6 @@ public class Minion {
         return this;
     }
 
-    public Minion setType(MinionItem.MinionType type) {
-        this.type = new Gson().toJson(type);
-        return this;
-    }
-
-    public Minion setOwnerId(UUID id) {
-        this.owner = id.toString();
-        return this;
-    }
     public int getFortune() {
         return fortune;
     }

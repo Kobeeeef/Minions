@@ -17,6 +17,7 @@ public class AdminGUI extends GUIExtender {
     public AdminGUI(Minion minion, Player player) {
         super(new GUI(ChatColor.GRAY + "Admin Page", Rows.ONE));
     }
+
     @Override
     public void onOpen(InventoryOpenEvent event) {
 

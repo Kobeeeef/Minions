@@ -12,7 +12,7 @@ import org.bukkit.inventory.meta.SkullMeta;
 import org.shawty.Core;
 import org.shawty.Database.Minion;
 import org.shawty.Database.Minions;
-import org.shawty.Entities.MinionItem;
+import org.shawty.Entities.MinionType;
 import org.shawty.Manager.MinionManager;
 import org.shawty.Utilities.Inventorys;
 import org.shawty.Utilities.Messages;
@@ -77,7 +77,7 @@ public class MinionGUI extends GUIExtender {
             }
         });
 
-        if (minion.getType().equals(MinionItem.MinionType.COLLECTOR)) {
+        if (minion.getType().equals(MinionType.COLLECTOR)) {
             ItemStack chestItem = new ItemStack(Material.CHEST);
             ItemMeta chestItemMeta = chestItem.getItemMeta();
             chestItemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);

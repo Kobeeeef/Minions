@@ -8,8 +8,8 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
-import org.shawty.Entities.MinionItem;
 import org.shawty.Core;
+import org.shawty.Entities.MinionType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +19,7 @@ public class Minion extends ItemStack {
         super();
     }
 
-    public static ItemStack getItem(int level, MinionItem.MinionType type) {
+    public static ItemStack getItem(int level, MinionType type) {
         ItemStack item = new ItemStack(Material.VILLAGER_SPAWN_EGG, 1);
         ItemMeta meta = item.getItemMeta();
         meta.setDisplayName(type.getName());

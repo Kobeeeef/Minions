@@ -31,7 +31,7 @@ public class Collector implements IMinion {
         collectItems(minion);
         List<Item> items = location.getNearbyEntitiesByType(Item.class, 9).stream().filter(i -> i.getLocation().distance(location) > 1 && i.getLocation().getBlockY() >= stand.getLocation().getBlockY()).collect(Collectors.toList());
         if (items.size() > 5) collectAllItems(minion);
-        else if(!items.isEmpty()) {
+        else if (!items.isEmpty()) {
             for (Item item : items) {
                 double distance = location.distance(item.getLocation());
                 double speed = (0.35 * distance);
@@ -55,7 +55,7 @@ public class Collector implements IMinion {
     private void collectItems(Minion minion) {
         Location location = minion.getLocation().toLocation();
         Collection<Item> itemsToPickup = location.getNearbyEntitiesByType(Item.class, 2);
-        if(!itemsToPickup.isEmpty()) {
+        if (!itemsToPickup.isEmpty()) {
             for (Item item : itemsToPickup) {
                 item.remove();
             }
@@ -66,7 +66,7 @@ public class Collector implements IMinion {
     private void collectAllItems(Minion minion) {
         Location location = minion.getLocation().toLocation();
         Collection<Item> itemsToPickup = location.getNearbyEntitiesByType(Item.class, 9);
-        if(!itemsToPickup.isEmpty()) {
+        if (!itemsToPickup.isEmpty()) {
             for (Item item : itemsToPickup) {
                 item.remove();
             }

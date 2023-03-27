@@ -17,6 +17,52 @@ public final class Core extends JavaPlugin {
     public static Map<UUID, Integer> minionTasks = new HashMap<>();
     private static MythicBukkit mythicMobs;
 
+    private static boolean checkMythicMobs() {
+        if (mythicMobs != null)
+            return true;
+        try {
+            MythicBukkit inst = MythicBukkit.inst();
+            if (inst != null) {
+                mythicMobs = inst;
+                return true;
+            }
+        } catch (NoClassDefFoundError error) {
+            Bukkit.getLogger().warning("[Minions] : MythicMobs could not be found.");
+        }
+        return false;
+    }
+
+    /**
+     * Return MythicMobs instance
+     *
+     * @return
+     */
+    public static MythicBukkit getMythicMobs()
+    {
+        if (mythicMobs == null)
+            checkMythicMobs();
+        return mythicMobs;
+    }
+
+    public static Core getPlugin() {
+        return Core.getPlugin(Core.class);
+    }
+
+    public static void reload() {
+        org.shawty.Files.Minions.reload();
+        getPlugin().reloadConfig();
+    }
+
+    public static Config getConfigClass() {
+        return new Config(getPlugin().getConfig());
+
+    }
+
+    public static org.shawty.Database.Minions getMinionsClass() {
+        return new org.shawty.Database.Minions(org.shawty.Files.Minions.get());
+
+    }
+
     @Override
     public void onEnable() {
         saveDefaultConfig();
@@ -49,51 +95,6 @@ public final class Core extends JavaPlugin {
         org.shawty.Files.Minions.save();
         this.saveConfig();
         // Plugin shutdown logic
-    }
-    private static boolean checkMythicMobs() {
-        if(mythicMobs != null)
-            return true;
-        try {
-            MythicBukkit inst = MythicBukkit.inst();
-            if (inst != null)
-            {
-                mythicMobs = inst;
-                return true;
-            }
-        } catch (NoClassDefFoundError error) {
-            Bukkit.getLogger().warning("[Minions] : MythicMobs could not be found.");
-        }
-        return false;
-    }
-
-    /**
-     * Return MythicMobs instance
-     * @return
-     */
-    public static MythicBukkit getMythicMobs()
-    {
-        if(mythicMobs == null)
-            checkMythicMobs();
-        return mythicMobs;
-    }
-
-    public static Core getPlugin() {
-        return Core.getPlugin(Core.class);
-    }
-
-    public static void reload() {
-        org.shawty.Files.Minions.reload();
-        getPlugin().reloadConfig();
-    }
-
-    public static Config getConfigClass() {
-        return new Config(getPlugin().getConfig());
-
-    }
-
-    public static org.shawty.Database.Minions getMinionsClass() {
-        return new org.shawty.Database.Minions(org.shawty.Files.Minions.get());
-
     }
 
     private void startMinions() {

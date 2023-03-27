@@ -8,6 +8,7 @@ public class PathFinding {
 
     /**
      * Move the entity to the specified location
+     *
      * @param entity
      * @param destination
      */
@@ -18,6 +19,7 @@ public class PathFinding {
 
     /**
      * Stop the entity at its location
+     *
      * @param entity
      */
     public static void stop(AbstractEntity entity)

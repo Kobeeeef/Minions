@@ -13,10 +13,11 @@ public class Inventorys {
     public boolean isFull() {
         return inventory.firstEmpty() == -1;
     }
+
     public void removeItem(ItemStack itemToRemove, int amount) {
         for (ItemStack itemStack : inventory) {
             // Check that the ItemStack isn't null (empty/air slots) or if it's not a slot containing diamonds
-            if(itemStack == null || !itemStack.equals(itemToRemove)) {
+            if (itemStack == null || !itemStack.equals(itemToRemove)) {
                 // if so, skip running further logic on this stack
                 continue;
             }

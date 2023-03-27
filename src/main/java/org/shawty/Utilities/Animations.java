@@ -15,8 +15,8 @@ public class Animations {
         if (stand == null)
             return 0;
         new BukkitRunnable() {
-            int counter = 0;
             final int frames = animation.angleAnimation.length;
+            int counter = 0;
 
             public void run() {
                 if (counter >= frames)

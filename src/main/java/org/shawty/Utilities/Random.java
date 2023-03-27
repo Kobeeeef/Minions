@@ -3,7 +3,6 @@ package org.shawty.Utilities;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Block;
-import org.bukkit.entity.Entity;
 import org.bukkit.util.BoundingBox;
 import org.bukkit.util.EulerAngle;
 import org.bukkit.util.Vector;
@@ -15,6 +14,7 @@ public class Random {
     public static Integer getRandomNumber(int min, int max) {
         return (int) (Math.random() * (max - min + 1) + min);
     }
+
     public static EulerAngle getHeadPose(Location source, Location target) {
         Vector direction = target.toVector().subtract(source.toVector().add(new Vector(0, 1, 0))).normalize();
         double x = direction.getX();
@@ -23,6 +23,7 @@ public class Random {
         double pitch = Math.atan2(-y, Math.sqrt(x * x + z * z));
         return new EulerAngle(pitch, 0, 0);
     }
+
     public static List<Block> getBlocksFromBoundingBox(BoundingBox box, World world) {
         List<Block> blocks = new ArrayList<>();
         for (int x = (int) box.getMinX(); x <= box.getMaxX(); x++) {
