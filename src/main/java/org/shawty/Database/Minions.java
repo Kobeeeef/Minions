@@ -38,10 +38,10 @@ public class Minions {
     }
 
     public void editMinion(UUID uuid, Minion newMinion) {
-        List<Minion> minions = getMinions();
-        Minion minion = getMinion(uuid);
-        minions.set(minions.indexOf(minion), getMinion(uuid));
-        fileConfiguration.set("Minions", minions.stream().map(m -> gson.toJson(m)).collect(Collectors.toList()));
+        List<String> minions = getMinions().stream().map(m -> gson.toJson(m)).collect(Collectors.toList());
+        String minion = gson.toJson(getMinion(uuid));
+        minions.set(minions.indexOf(minion), gson.toJson(newMinion));
+        fileConfiguration.set("Minions", minions);
         org.shawty.Files.Minions.save();
         org.shawty.Files.Minions.reload();
     }

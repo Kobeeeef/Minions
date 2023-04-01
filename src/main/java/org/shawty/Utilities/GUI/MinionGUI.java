@@ -1,10 +1,13 @@
 package org.shawty.Utilities.GUI;
 
 import org.bukkit.*;
+import org.bukkit.block.Block;
 import org.bukkit.block.Chest;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -14,6 +17,7 @@ import org.shawty.Database.Minion;
 import org.shawty.Database.Minions;
 import org.shawty.Entities.MinionType;
 import org.shawty.Manager.MinionManager;
+import org.shawty.Utilities.EventWaiter;
 import org.shawty.Utilities.Inventorys;
 import org.shawty.Utilities.Messages;
 import pl.socketbyte.opengui.GUI;
@@ -89,7 +93,22 @@ public class MinionGUI extends GUIExtender {
             chestItemMeta.setLore(chestLore);
             chestItem.setItemMeta(chestItemMeta);
             addItem(new ItemBuilder().setItem(chestItem), response -> {
-
+                player.closeInventory();
+                player.sendMessage(Messages.CHEST_LINK.getMessage());
+                EventWaiter<PlayerInteractEvent> playerJoinWaiter = new EventWaiter<>(PlayerInteractEvent.class, event -> {
+                    Player player1 = event.getPlayer();
+                    if (!player1.getUniqueId().equals(player.getUniqueId())) return;
+                    Block block = event.getClickedBlock();
+                    if(block == null) return;
+                    if (!(block.getState() instanceof InventoryHolder)) {
+                        player1.sendMessage(Messages.INVALID_CHEST.getMessage());
+                        return;
+                    }
+                    minion.setChest(block.getLocation());
+                    Core.getMinionsClass().editMinion(minion.getId(), minion);
+                    player1.sendMessage(Messages.CHEST_LINKED.getMessage());
+                });
+                playerJoinWaiter.waitForEvent(100L);
             });
         } else setItem(8, filler);
     }

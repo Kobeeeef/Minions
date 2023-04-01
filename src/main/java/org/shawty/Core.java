@@ -63,6 +63,7 @@ public final class Core extends JavaPlugin {
 
     }
 
+
     @Override
     public void onEnable() {
         saveDefaultConfig();

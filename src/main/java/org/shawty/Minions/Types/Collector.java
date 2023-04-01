@@ -2,6 +2,7 @@ package org.shawty.Minions.Types;
 
 import org.bukkit.Location;
 import org.bukkit.Sound;
+import org.bukkit.block.Chest;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Item;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -9,6 +10,7 @@ import org.bukkit.util.Vector;
 import org.shawty.Core;
 import org.shawty.Database.Minion;
 import org.shawty.Minions.IMinion;
+import org.shawty.Utilities.Inventorys;
 
 import java.util.Collection;
 import java.util.List;
@@ -28,6 +30,9 @@ public class Collector implements IMinion {
     @Override
     public void action() {
         Location location = minion.getLocation().toLocation();
+        Chest chest = minion.getChest();
+        if(chest == null) return;
+        if(new Inventorys(chest.getInventory()).isFull()) return;
         collectItems(minion);
         List<Item> items = location.getNearbyEntitiesByType(Item.class, 9).stream().filter(i -> i.getLocation().distance(location) > 1 && i.getLocation().getBlockY() >= stand.getLocation().getBlockY()).collect(Collectors.toList());
         if (items.size() > 5) collectAllItems(minion);
@@ -58,6 +63,7 @@ public class Collector implements IMinion {
         if (!itemsToPickup.isEmpty()) {
             for (Item item : itemsToPickup) {
                 item.remove();
+                minion.getChest().getInventory().addItem(item.getItemStack());
             }
             location.getWorld().playSound(location, Sound.ENTITY_ITEM_PICKUP, 1, 1);
         }
@@ -69,6 +75,7 @@ public class Collector implements IMinion {
         if (!itemsToPickup.isEmpty()) {
             for (Item item : itemsToPickup) {
                 item.remove();
+                minion.getChest().getInventory().addItem(item.getItemStack());
             }
             location.getWorld().playSound(location, Sound.ENTITY_ITEM_PICKUP, 1, 1);
         }
