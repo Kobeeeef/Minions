@@ -10,9 +10,7 @@ import org.shawty.Database.Minion;
 import org.shawty.Minions.IMinion;
 import org.shawty.Utilities.Random;
 
-import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class Bloomer implements IMinion {
     Minion minion;
@@ -28,7 +26,7 @@ public class Bloomer implements IMinion {
     public void action() {
         Location location = minion.getLocation().toLocation();
         BoundingBox box = BoundingBox.of(location.clone().subtract(8, 0, 8), location.clone().add(8, 8, 8));
-        List<Block> blocks = Random.getBlocksFromBoundingBox(box, location.getWorld()).stream().filter(b -> Arrays.stream(BONEMEALABLE_BLOCKS).anyMatch(w -> b.getType().equals(w))).collect(Collectors.toList());
+        List<Block> blocks = Random.getBlocksFromBoundingBox(box, location.getWorld());
         for (Block block : blocks) {
             block.applyBoneMeal(BlockFace.DOWN);
         }

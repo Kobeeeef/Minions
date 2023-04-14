@@ -2,9 +2,11 @@ package org.shawty.Database;
 
 import com.google.gson.Gson;
 import org.bukkit.Location;
+import org.bukkit.block.BlockState;
 import org.bukkit.block.Chest;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.inventory.InventoryHolder;
+import org.shawty.Core;
 import org.shawty.Entities.MinionType;
 
 import java.util.UUID;
@@ -32,11 +34,21 @@ public class Minion {
     }
 
     public Chest getChest() {
-        if (chest == null) return null;
-        return (Chest) new Gson().fromJson(chest, BlockLocation.class).toLocation().getBlock().getState();
+        if (this.chest == null) return null;
+        BlockState state = new Gson().fromJson(chest, BlockLocation.class).toLocation().getBlock().getState();
+        if (state instanceof InventoryHolder) return (Chest) state;
+        else {
+            setChest(null);
+            Core.getMinionsClass().editMinion(getId(), this);
+            return null;
+        }
     }
 
     public Minion setChest(Location location) {
+        if (location == null) {
+            this.chest = null;
+            return this;
+        }
         if (!(location.getBlock().getState() instanceof InventoryHolder)) return this;
         this.chest = new Gson().toJson(new BlockLocation(location));
         return this;

@@ -21,7 +21,7 @@ import static org.shawty.Utilities.Random.getHeadPose;
 
 public class Lumberjack implements IMinion {
     private final BlockFace[] blockFaces = new BlockFace[]{BlockFace.SELF, BlockFace.UP, BlockFace.DOWN, BlockFace.NORTH, BlockFace.EAST, BlockFace.WEST, BlockFace.SOUTH};
-    private final Material[] wood_blocks = new Material[]{Material.OAK_LOG, Material.DARK_OAK_LOG, Material.BIRCH_LOG, Material.MANGROVE_LOG, Material.JUNGLE_LOG, Material.SPRUCE_LOG, Material.ACACIA_LOG};
+    private final Material[] wood_blocks = new Material[]{Material.OAK_LOG, Material.DARK_OAK_LOG, Material.BIRCH_LOG, Material.MANGROVE_LOG, Material.JUNGLE_LOG, Material.SPRUCE_LOG, Material.ACACIA_LOG, Material.MANGROVE_ROOTS};
     private final Material[] wood_leaves = new Material[]{Material.OAK_LEAVES, Material.DARK_OAK_LEAVES, Material.BIRCH_LEAVES, Material.MANGROVE_LEAVES, Material.JUNGLE_LEAVES, Material.SPRUCE_LEAVES, Material.ACACIA_LEAVES, Material.VINE};
     Minion minion;
     ArmorStand stand;
@@ -47,7 +47,11 @@ public class Lumberjack implements IMinion {
             stand.setRotation(yaw, pitch);
             stand.setHeadPose(getHeadPose(stand.getLocation(), block.getLocation()));
             Animations.performAnimation(stand, Animations.Animation.RIGHT_ARM_HIT);
+            Location blockLocation = block.getLocation();
+            Material blockType =block.getType();
             block.breakNaturally(true, true);
+            if (blockLocation.getBlockY() == location.getBlockY())
+                block.setType(getSaplingTypeFromLog(blockType));
             for (final BlockFace blockFace : this.blockFaces) {
                 final Block relative = block.getRelative(blockFace);
                 if (Arrays.stream(this.wood_leaves).anyMatch(m -> m.equals(relative.getType()))) {
@@ -58,4 +62,30 @@ public class Lumberjack implements IMinion {
 
     }
 
+    private Material getSaplingTypeFromLog(Material material) {
+        saplingType[] saplingTypes = saplingType.values();
+        for (saplingType saplingType : saplingTypes) {
+            if (saplingType.getLog().equals(material)) return saplingType.getSapling();
+        }
+        return Material.AIR;
+    }
+
+    private enum saplingType {
+        OAK_LOG(Material.OAK_LOG, Material.OAK_SAPLING), DARK_OAK_LOG(Material.DARK_OAK_LOG, Material.DARK_OAK_SAPLING), BIRCH_LOG(Material.BIRCH_LOG, Material.BIRCH_SAPLING), MANGROVE_LOG(Material.MANGROVE_ROOTS, Material.MANGROVE_PROPAGULE), JUNGLE_LOG(Material.JUNGLE_LOG, Material.JUNGLE_SAPLING), SPRUCE_LOG(Material.SPRUCE_LOG, Material.SPRUCE_SAPLING), ACACIA_LOG(Material.ACACIA_LOG, Material.ACACIA_SAPLING);
+        final Material log;
+        final Material sapling;
+
+        public Material getLog() {
+            return log;
+        }
+
+        public Material getSapling() {
+            return sapling;
+        }
+
+        saplingType(Material log, Material sapling) {
+            this.log = log;
+            this.sapling = sapling;
+        }
+    }
 }

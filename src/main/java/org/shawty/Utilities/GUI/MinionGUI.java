@@ -107,6 +107,7 @@ public class MinionGUI extends GUIExtender {
                     minion.setChest(block.getLocation());
                     Core.getMinionsClass().editMinion(minion.getId(), minion);
                     player1.sendMessage(Messages.CHEST_LINKED.getMessage());
+                    event.setCancelled(true);
                 });
                 playerJoinWaiter.waitForEvent(100L);
             });

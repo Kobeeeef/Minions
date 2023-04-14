@@ -2,6 +2,7 @@ package org.shawty.Database;
 
 import com.google.gson.Gson;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.shawty.Manager.MinionManager;
 
 import java.util.List;
 import java.util.Optional;
@@ -33,6 +34,7 @@ public class Minions {
         List<Minion> minions = getMinions();
         minions.add(minion);
         fileConfiguration.set("Minions", minions.stream().map(m -> gson.toJson(m)).collect(Collectors.toList()));
+        MinionManager.registerMinion(minion);
         org.shawty.Files.Minions.save();
         org.shawty.Files.Minions.reload();
     }
@@ -41,6 +43,7 @@ public class Minions {
         List<String> minions = getMinions().stream().map(m -> gson.toJson(m)).collect(Collectors.toList());
         String minion = gson.toJson(getMinion(uuid));
         minions.set(minions.indexOf(minion), gson.toJson(newMinion));
+        MinionManager.registerMinion(newMinion);
         fileConfiguration.set("Minions", minions);
         org.shawty.Files.Minions.save();
         org.shawty.Files.Minions.reload();
@@ -48,6 +51,7 @@ public class Minions {
 
     public void removeMinion(Minion minion) {
         List<Minion> minions = getMinions();
+        MinionManager.unregisterMinion(minion);
         fileConfiguration.set("Minions", minions.stream().filter(m -> !m.getId().equals(minion.getId())).map(m -> gson.toJson(m)).collect(Collectors.toList()));
         org.shawty.Files.Minions.save();
         org.shawty.Files.Minions.reload();

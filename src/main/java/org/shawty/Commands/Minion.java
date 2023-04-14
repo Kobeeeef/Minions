@@ -34,6 +34,10 @@ public class Minion implements CommandExecutor, TabCompleter {
         }
         switch (args[0]) {
             case "give":
+                if(args.length < 3) {
+                    player.sendMessage(Messages.INVALID_COMMAND.getMessage());
+                    return false;
+                }
                 int level = Integer.parseInt(args[2]);
                 MinionType type = args[1].equals("slayer") ? MinionType.SLAYER : args[1].equals("miner") ? MinionType.MINER : args[1].equals("farmer") ? MinionType.FARMER : args[1].equals("fisher") ? MinionType.FISHER : args[1].equals("collector") ? MinionType.COLLECTOR : args[1].equals("lumberjack") ? MinionType.LUMBERJACK : args[1].equals("bloomer") ? MinionType.BLOOMER : null;
                 if (type == null) {

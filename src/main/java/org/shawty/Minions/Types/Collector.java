@@ -31,8 +31,8 @@ public class Collector implements IMinion {
     public void action() {
         Location location = minion.getLocation().toLocation();
         Chest chest = minion.getChest();
-        if(chest == null) return;
-        if(new Inventorys(chest.getInventory()).isFull()) return;
+        if (chest == null) return;
+        if (new Inventorys(chest.getInventory()).isFull()) return;
         collectItems(minion);
         List<Item> items = location.getNearbyEntitiesByType(Item.class, 9).stream().filter(i -> i.getLocation().distance(location) > 1 && i.getLocation().getBlockY() >= stand.getLocation().getBlockY()).collect(Collectors.toList());
         if (items.size() > 5) collectAllItems(minion);

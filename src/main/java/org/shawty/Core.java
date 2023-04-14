@@ -1,7 +1,8 @@
 package org.shawty;
 
-import io.lumine.mythic.bukkit.MythicBukkit;
+import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
+import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.shawty.Commands.Minion;
 import org.shawty.Commands.test;
@@ -15,37 +16,15 @@ import java.util.logging.Level;
 
 public final class Core extends JavaPlugin {
     public static Map<UUID, Integer> minionTasks = new HashMap<>();
-    private static MythicBukkit mythicMobs;
 
-    private static boolean checkMythicMobs() {
-        if (mythicMobs != null)
-            return true;
-        try {
-            MythicBukkit inst = MythicBukkit.inst();
-            if (inst != null) {
-                mythicMobs = inst;
-                return true;
-            }
-        } catch (NoClassDefFoundError error) {
-            Bukkit.getLogger().warning("[Minions] : MythicMobs could not be found.");
-        }
-        return false;
-    }
-
-    /**
-     * Return MythicMobs instance
-     *
-     * @return
-     */
-    public static MythicBukkit getMythicMobs()
-    {
-        if (mythicMobs == null)
-            checkMythicMobs();
-        return mythicMobs;
-    }
+    private Economy economy;
 
     public static Core getPlugin() {
         return Core.getPlugin(Core.class);
+    }
+
+    public Economy getEconomy() {
+        return economy;
     }
 
     public static void reload() {
@@ -73,6 +52,16 @@ public final class Core extends JavaPlugin {
             getLogger().log(Level.SEVERE, config.getPrefix() + " Your license is invalid! Please contact support @ our discord!");
             Bukkit.getPluginManager().disablePlugin(this);
         } else {
+
+            if (!setupEconomy()) {
+                Bukkit.getLogger().severe(String.format("[%s] - Disabled due to no Vault dependency or provider found!", getDescription().getName()));
+                getServer().getPluginManager().disablePlugin(this);
+                return;
+            } else {
+                Bukkit.getLogger().info(String.format("[%1$s] - %2$s hooked!", getDescription().getName(), getEconomy().getName()));
+
+            }
+
             org.shawty.Files.Minions.setup();
             org.shawty.Files.Minions.get().addDefault("Minions", new ArrayList<String>());
             org.shawty.Files.Minions.get().options().copyDefaults(true);
@@ -87,7 +76,9 @@ public final class Core extends JavaPlugin {
             getCommand("minion").setExecutor(new Minion());
             getCommand("test").setExecutor(new test());
             OpenGUI.INSTANCE.register(this);
+            Bukkit.getLogger().info(String.format("[%1$s] - Starting %2$d minions!", getDescription().getName(), getMinionsClass().getMinions().size()));
             startMinions();
+            Bukkit.getLogger().info(String.format("[%1$s] - Started %2$d/%3$d minions!", getDescription().getName(), minionTasks.size(),getMinionsClass().getMinions().size()));
         }
     }
 
@@ -103,5 +94,15 @@ public final class Core extends JavaPlugin {
         for (org.shawty.Database.Minion minion : minions) {
             MinionManager.registerMinion(minion);
         }
+    }
+
+    private boolean setupEconomy() {
+        if (Arrays.stream(Bukkit.getPluginManager().getPlugins()).noneMatch(p -> p.getName().equals("Vault")))
+            return false;
+        RegisteredServiceProvider<Economy> rsp = Bukkit.getServicesManager().getRegistration(Economy.class);
+        if (rsp == null) return false;
+
+        this.economy = rsp.getProvider();
+        return true;
     }
 }

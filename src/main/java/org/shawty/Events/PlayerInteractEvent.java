@@ -69,7 +69,6 @@ public class PlayerInteractEvent implements Listener {
                         .setLevel(minionItem.getLevel());
                 org.shawty.Database.Minions minions = Core.getMinionsClass();
                 minions.addMinion(minion);
-                MinionManager.registerMinion(minion);
             }
 
 
